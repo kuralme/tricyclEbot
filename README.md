@@ -2,7 +2,7 @@
 A tricycle robot, named ebot, navigation project on gazebo
 
 <p align="center">
- <img src="./images/robot_joints.png" scale=".5">
+ <img src="./images/robot_joints.png" length=".5" width=".5">
 </p>
 
 The robot is a wheeled tricycle mobile platform with a single actuated front wheel and steering where center of rotation of both coincidents, and two back wheels are non-actuated. The robot's center of body is located at middle point of the rear axis, in between the two back wheels.
