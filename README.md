@@ -1,6 +1,3 @@
-## **Author**
-[Mustafa Ege Kural]
-
 ## **Description**
 A tricycle robot, named ebot, navigation project on gazebo
 
@@ -41,5 +38,5 @@ Download this package to the _src_ folder of your ROS workspace
 
 ### TODOs ###
 
-- Change odometry method to 'encoder' instead of 'world'
-- Fine-tune planner parameters for better maneuvering
+- [x] Fine-tune planner parameters for better maneuvering
+- [] Change odometry method to 'encoder' instead of 'world'
