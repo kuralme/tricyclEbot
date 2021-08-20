@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="x_pos" default="3.7"/>
+  <arg name="y_pos" default="-2.0"/>
+  <arg name="yaw"   default="3.14"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find ebot_gazebo)/worlds/eworld.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <!-- Robot urdf loaded on the Parameter Server-->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find ebot_description)/urdf/ebot.urdf.xacro'"/>
+
+  <!-- Robot spawned in Gazebo-->
+  <node name="ebot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+   args="-urdf -model ebot -x $(arg x_pos) -y $(arg y_pos) -Y $(arg yaw) -param robot_description" />
+
+</launch>

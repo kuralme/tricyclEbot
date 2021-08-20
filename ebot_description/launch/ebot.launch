@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Gazebo -->
+  <include file="$(find ebot_gazebo)/launch/ebot_world.launch"/>
+   
+  <!-- Localization -->
+  <include file="$(find ebot_description)/launch/ebot_amcl.launch"/>
+
+</launch>

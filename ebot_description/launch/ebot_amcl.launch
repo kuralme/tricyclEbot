@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!-- Ebot Parameters -->
+  <arg name="global_frame_id" default="map"/>
+  <arg name="initial_pose_x"  default="3.7"/>
+  <arg name="initial_pose_y"  default="-2.0"/>
+  <arg name="initial_pose_a"  default="3.14"/>
+  <arg name="odom_frame_id"   default="odom"/>
+  <arg name="base_frame_id"   default="base_footprint"/>
+  <arg name="scan_topic"      default="scan"/>
+  <arg name="laser_frame"     default="laser"/>
+  <arg name="cmd_vel_topic"   default="cmd_vel"/>
+  <arg name="map_file" 	      default="$(find ebot_navigation)/maps/ebot_map.yaml"/>
+
+  <!-- Map server -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <!-- Rviz Config -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ebot_description)/rviz/ebot.rviz"/>
+
+
+  <!-- AMCL -->
+  <include file="$(find ebot_navigation)/xml/amcl.launch">
+    <arg name="initial_pose_x"  value="$(arg initial_pose_x)"/>
+    <arg name="initial_pose_y"  value="$(arg initial_pose_y)"/>
+    <arg name="initial_pose_a"  value="$(arg initial_pose_a)"/>
+    <arg name="odom_frame_id"   value="$(arg odom_frame_id)"/>
+    <arg name="base_frame_id"   value="$(arg base_frame_id)"/>
+    <arg name="global_frame_id" value="$(arg global_frame_id)"/>
+    <arg name="scan_topic"      value="$(arg scan_topic)"/>
+  </include>
+
+  <!-- Move Base -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <param name="controller_frequency" value="10.0"/> 
+    <param name="controller_patience"  value="15.0"/>
+    <!-- Timed Elastic Band -->
+    <rosparam file="$(find ebot_navigation)/config/teb/costmap_common_params.yaml" command="load" ns="global_costmap"/>
+    <rosparam file="$(find ebot_navigation)/config/teb/costmap_common_params.yaml" command="load" ns="local_costmap"/>
+    <rosparam file="$(find ebot_navigation)/config/teb/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find ebot_navigation)/config/teb/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find ebot_navigation)/config/teb/base_local_planner_params.yaml" command="load"/>
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS"/>
+    <!---->
+    <!-- Dynamic Window Approach
+    <rosparam file="$(find ebot_navigation)/config/dwa/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find ebot_navigation)/config/dwa/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find ebot_navigation)/config/dwa/local_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find ebot_navigation)/config/dwa/global_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find ebot_navigation)/config/dwa/dwa_local_planner_params.yaml" command="load"/>
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/>
+    -->
+    <param name="global_costmap/global_frame" value="$(arg global_frame_id)"/>
+    <param name="global_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
+    <param name="local_costmap/global_frame" value="$(arg odom_frame_id)"/>
+    <param name="local_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
+    <remap from="odom" to="$(arg odom_frame_id)"/>
+    <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
+    <remap from="laser" to="$(arg laser_frame)"/>
+    <remap from="scan" to="$(arg scan_topic)"/>
+
+  </node>
+</launch>

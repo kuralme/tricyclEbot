@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Gazebo -->
+  <include file="$(find ebot_gazebo)/launch/ebot_world.launch"/>
+
+  <!-- Gmapping -->
+  <include file="$(find ebot_navigation)/xml/gmapping.launch">
+    <arg name="odom_frame"   value="odom"/>
+    <arg name="base_frame"   value="base_footprint"/>
+    <arg name="scan_topic"   value="scan"/>
+  </include>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ebot_description)/rviz/mapping.rviz"/>
+</launch>

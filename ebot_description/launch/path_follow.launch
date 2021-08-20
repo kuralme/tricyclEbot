@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="ebot_navigation" type="ebot_nav" name="ebot_nav" output="screen">     
+    <!-- Waypoint positions wrt "map" (x,y,z in meters) -->
+    <rosparam param="position">[1.5,-0.8,0, -1.39,-1.31,0, -1.57,1.53,0, 3.81,1.42,0, 3.7,-2.0,0]</rosparam>
+    <!-- Waypoint oriantation (yaw angles)-->
+    <rosparam param="oriantation">[160,100,20,270,180]</rosparam>
+  </node>
+
+</launch>

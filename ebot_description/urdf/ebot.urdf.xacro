@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+
+<!-- Tricycle robot "ebot" description file -->
+
+<robot name="ebot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+   <xacro:include filename="$(find ebot_description)/urdf/hardware.xacro"/>
+   <xacro:include filename="$(find ebot_description)/urdf/materials.xacro"/>
+
+   <!-- ====================================================
+                           Config
+   ========================================================= -->
+   <xacro:property name="M_PI" 			 value="3.141"/>
+   <xacro:property name="DX" 			 value="0.5"/>
+   <xacro:property name="DY" 			 value="0.2"/>
+   <xacro:property name="DZ" 			 value="0.1"/>
+   <xacro:property name="CHASSIS_MASS" 		 value="5.0"/>
+   <xacro:property name="WHEEL_DEPTH" 		 value="0.03"/>
+   <xacro:property name="FRONT_WHEEL_RADIUS" 	 value="0.05"/>
+   <xacro:property name="FRONT_WHEEL_SEPERATION" value="0.2"/>
+   <xacro:property name="FRONT_WHEEL_MASS"	 value="2.0"/>
+   <xacro:property name="BACK_WHEEL_RADIUS"  	 value="0.1"/>
+   <xacro:property name="BACK_WHEEL_SEPERATION"  value="-0.1"/>
+   <xacro:property name="BACK_WHEEL_BASELINE"    value="0.23"/>
+   <xacro:property name="BACK_WHEEL_MASS" 	 value="3.0"/>
+   <xacro:property name="CHASSIS" 		 value="base_link"/>
+   <xacro:property name="NS" 		   	 value="/"/>
+     
+
+   <!-- ====================================================
+                        Main Components
+   ========================================================= -->
+
+   <!-- The base_frame -->
+   <link name="base_footprint"/>
+
+   <!-- Chassis -->
+   <xacro:chassis name="${CHASSIS}" parent="base_footprint" xyz="0.0 0.0 ${BACK_WHEEL_RADIUS}"  			rpy="0 0 0" dx="${DX}" dy="${DY}" dz="${DZ}" mass="${CHASSIS_MASS}" color=""  		            	mesh="package://ebot_description/urdf/meshes/chassis.dae"/>
+
+     <!-- Wheels -->
+   <xacro:std_wheel name="right" parent="${CHASSIS}" xyz="${BACK_WHEEL_SEPERATION} ${BACK_WHEEL_BASELINE/2} 				0.0" rpy="${-M_PI/2} 0 0" radius="${BACK_WHEEL_RADIUS}" 			 				length="${WHEEL_DEPTH}" mass="${BACK_WHEEL_MASS}" color="black"/>
+
+   <xacro:std_wheel name="left" parent="${CHASSIS}" xyz="${BACK_WHEEL_SEPERATION} ${-BACK_WHEEL_BASELINE/2} 				0.0" rpy="${-M_PI/2} 0 0" radius="${BACK_WHEEL_RADIUS}" length="${WHEEL_DEPTH}"  			        mass="${BACK_WHEEL_MASS}" color="black"/>
+	
+   <xacro:act_steering_wheel name="front" parent="${CHASSIS}" 					 				xyz="${FRONT_WHEEL_SEPERATION} 0.0 ${FRONT_WHEEL_RADIUS-BACK_WHEEL_RADIUS}" 				rpy="${M_PI/2} 0 0" radius="${FRONT_WHEEL_RADIUS}" length="${WHEEL_DEPTH}"  				mass="${FRONT_WHEEL_MASS}" color="black"/>
+
+   <!-- ====================================================
+			Sensors
+   ========================================================= -->
+
+   <!-- Hokuyo Laser Scanner -->
+   <xacro:hokuyo parent="${CHASSIS}" xyz="${FRONT_WHEEL_SEPERATION} 0.0 ${DZ/2+0.017}" 				mesh="package://ebot_description/urdf/meshes/hokuyo.dae"/>
+
+   <!-- ====================================================
+     		   Gazebo Plugins
+   ========================================================= -->
+    
+     <!--<plugin name="tricycle_drive_controller" filename="libgazebo_ros_tricycle_drive.so"> -->
+   <gazebo>
+     <!--Modified plugin:-->
+     <plugin name="tricycle_drive_controller" filename="libTricycleDriveModPlugin.so">        
+         <rosDebugLevel>Debug</rosDebugLevel>
+         <robotNamespace>${NS}</robotNamespace>
+         <publishWheelTF>false</publishWheelTF>
+         <publishWheelJointState>true</publishWheelJointState>
+         <steeringJoint>front_steering_joint</steeringJoint>
+         <actuatedWheelJoint>front_wheel_joint</actuatedWheelJoint>
+         <actuatedWheelDiameter>${FRONT_WHEEL_RADIUS}</actuatedWheelDiameter>
+         <encoderWheelLeftJoint>left_wheel_joint</encoderWheelLeftJoint>
+         <encoderWheelRightJoint>right_wheel_joint</encoderWheelRightJoint>
+         <encoderWheelDiameter>${BACK_WHEEL_RADIUS}</encoderWheelDiameter>
+         <encoderWheelSeparation>${BACK_WHEEL_BASELINE}</encoderWheelSeparation>
+         <commandTopic>cmd_vel</commandTopic>
+         <odometryTopic>odom</odometryTopic>
+         <odometryFrame>odom</odometryFrame>
+         <odometrySource>world</odometrySource>
+         <robotBaseFrame>base_footprint</robotBaseFrame>
+         <updateRate>10.0</updateRate>
+         <wheelAcceleration>2</wheelAcceleration>
+         <wheelDeceleration>5</wheelDeceleration>
+         <wheelSpeedTolerance>0.05</wheelSpeedTolerance>
+         <wheelTorque>10</wheelTorque>
+         <steeringSpeed>0.3</steeringSpeed>
+         <steeringAngleTolerance>0.02</steeringAngleTolerance>
+         <steeringAngleLimit>${M_PI/4}</steeringAngleLimit>
+     </plugin>
+   </gazebo>
+
+
+   <gazebo reference="laser">
+     <sensor name="laser" type="ray">
+       <pose>0 0 0 0 0 0</pose>
+       <visualize>true</visualize>
+       <update_rate>40</update_rate>
+       <ray>
+         <scan>
+           <horizontal>
+             <samples>720</samples>
+             <resolution>1</resolution>
+             <min_angle>-1.570796</min_angle>
+             <max_angle>1.570796</max_angle>
+           </horizontal>
+         </scan>
+         <range>
+           <min>0.10</min>
+           <max>30.0</max>
+           <resolution>0.01</resolution>
+         </range>
+         <noise>
+           <type>gaussian</type>
+           <mean>0.0</mean>
+           <stddev>0.01</stddev>
+         </noise>
+       </ray>
+       <plugin name="gazebo_ros_hokuyo_controller" filename="libgazebo_ros_laser.so">
+         <robotNamespace>${NS}</robotNamespace>
+         <topicName>scan</topicName>
+         <frameName>laser</frameName>
+       </plugin>
+     </sensor>
+   </gazebo>
+
+</robot>

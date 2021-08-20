@@ -1,0 +1,144 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+     <!-- ====================================================
+                           Chassis
+     ========================================================= -->
+
+     <xacro:macro name="chassis" params="name parent xyz rpy dx dy dz mass color mesh">
+
+	<joint name="${name}_joint" type="fixed">
+	  <origin xyz="${xyz}" rpy="${rpy}"/>
+	  <parent link="${parent}"/>
+	  <child link="${name}"/>
+	</joint>
+
+	<link name="${name}">
+	  <collision>
+	    <geometry>
+	      <box size="${dx} ${dy} ${dz}"/>
+	    </geometry>
+	  </collision>
+	  <xacro:box_inertial x="${dx}" y="${dy}" z="${dz}" mass="${mass}"/>
+	  <visual name="${name}_visual">
+	    <geometry>
+              <mesh filename="${mesh}" scale="1 0.6 0.6">
+	      <box size="${dx} ${dy} ${dz}"/>
+	      </mesh>
+	    </geometry>
+	    <xacro:color_material color="${color}"/>
+	  </visual>
+	</link>
+	<xacro:color_gazebo parent="${name}" color="${color}"/>
+     </xacro:macro>
+
+     <!-- ====================================================
+                     Wheel Links and Joints
+     ========================================================= -->
+
+     <!-- Standard Wheel-->
+     <xacro:macro name="std_wheel" params="name parent xyz rpy radius length mass color">
+
+       <joint name="${name}_wheel_joint" type="continuous">
+	 <parent link="${parent}"/>
+	 <child link="${name}_wheel"/>
+	 <origin xyz="${xyz}" rpy="${rpy}"/>
+	 <axis xyz="0 0 1"/>
+	 <anchor xyz="0 0 0"/>
+         <dynamics damping="0.0" friction="0.0"/>
+	 <limit effort="100" velocity="100" k_velocity="0"/>
+       </joint>
+
+       <link name="${name}_wheel">
+	 <collision>
+	   <origin xyz="0 0 0" rpy="0 0 0"/>
+	   <geometry>
+	     <cylinder radius="${radius}" length="${length}"/>
+	   </geometry>
+	 </collision>
+	 <xacro:cylinder_inertial radius="${radius}" length="${length}" mass="${mass}" />
+	 <visual>
+	   <origin xyz="0 0 0" rpy="0 0 0"/>
+	   <geometry>
+	     <cylinder radius="${radius}" length="${length}"/>
+	   </geometry>
+	   <xacro:color_material color="${color}"/>
+	 </visual>
+       </link>
+
+       <gazebo reference="${name}_wheel">
+	 <mu1 value="1.0"/>
+	 <mu2 value="1.0"/>
+	 <kp  value="10000000.0" />
+	 <kd  value="1.0" />
+	 <fdir1 value="1 0 0"/>
+       </gazebo>
+       <xacro:color_gazebo parent="${name}_wheel" color="${color}"/>
+
+     </xacro:macro>
+     
+     <!-- =================================================================== -->
+
+     <!-- Actuated Stering Wheel-->
+     <xacro:macro name="act_steering_wheel" params="name parent xyz rpy radius length mass color">
+
+       <joint name="${name}_steering_joint" type="revolute">
+         <origin xyz="${xyz}" rpy="${rpy}"/>
+         <parent link="${parent}"/>
+         <child link="steering_link"/>
+         <axis xyz="0 1 0"/>
+         <anchor xyz="0 0 0"/>
+         <dynamics damping="0.0" friction="0.0"/>
+	 <limit effort="100" velocity="100" k_velocity="0" lower="${-M_PI/4}" upper="${M_PI/4}"/>
+	 <safety_controller k_position="100" soft_lower_limit="-1.37" 					 				    k_velocity="100" soft_upper_limit="1.37"/>
+       </joint>
+
+       <link name="steering_link">
+         <visual name="steering_visual">
+           <origin xyz="0 0 0" rpy="0 0 0"/>
+           <geometry>
+             <cylinder radius="${radius/8.0}" length="${length}"/>
+           </geometry>
+         </visual>
+         <xacro:cylinder_inertial radius="${radius/8.0}" length="${length}" mass="${mass/2.0}" />
+       </link>
+
+       <xacro:std_wheel name="${name}" parent="steering_link"  xyz="0 0 0" rpy="${M_PI} 0 0" 				radius="${radius}" length="${length}" mass="${mass}" color="${color}"/>
+     </xacro:macro>
+
+
+     <!-- ====================================================
+			Sensors
+     ========================================================= -->
+
+     <xacro:macro name="hokuyo" params="parent xyz mesh">
+
+       <joint name="hokuyo_joint" type="fixed">
+         <origin xyz="${xyz}" rpy="0 0 0"/>
+         <parent link="${parent}"/>
+         <child link="laser"/>
+       </joint>
+
+       <link name="laser">
+         <collision>
+           <origin xyz="0 0 0" rpy="0 0 0"/>
+           <geometry>
+             <box size="0.1 0.1 0.1"/>
+           </geometry>
+         </collision>
+         <visual>
+           <origin xyz="0 0 0" rpy="0 0 0"/>
+           <geometry>
+             <mesh filename="${mesh}"/>
+           </geometry>
+         </visual>
+         <inertial>
+           <mass value="1e-5" />
+           <origin xyz="0 0 0" rpy="0 0 0"/>
+           <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+         </inertial>
+       </link>
+
+     </xacro:macro>
+
+</robot>
