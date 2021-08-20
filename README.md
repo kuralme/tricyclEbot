@@ -19,25 +19,23 @@ Download this package to the _src_ folder of your ROS workspace
 
 
 ### **Instructions**
-- Run ebot launch file - the complete simulation in a custom world:
-roslaunch ebot_description ebot.launch
-
-- Run path following script with pre-determined waypoints:
-```roslaunch ebot_description path_follow.launch```
+- To run the ebot launch file - the complete simulation in a custom world and the path following script with pre-determined waypoints:
+  ```roslaunch ebot_description ebot.launch```
+  ```roslaunch ebot_description path_follow.launch```
 
 
 - Gazebo simulation only:
-```roslaunch ebot_gazebo ebot_world.launch```
+  ```roslaunch ebot_gazebo ebot_world.launch```
 
 - Mapping:
-```roslaunch ebot_description ebot_mapping.launch```
+  ```roslaunch ebot_description ebot_mapping.launch```
 
 - Keyboard teleop:
-```rosrun ebot_navigation ebot_teleop.py```
+  ```rosrun ebot_navigation ebot_teleop.py```
 
 - Save the map:
-```roscd ebot_navigation/maps```
-```rosrun map_server map_saver -f my_map```
+  ```roscd ebot_navigation/maps```
+  ```rosrun map_server map_saver -f my_map```
 
 
 
