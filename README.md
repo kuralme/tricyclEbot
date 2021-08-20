@@ -34,7 +34,8 @@ Download this package to the _src_ folder of your ROS workspace
   ```roscd ebot_navigation/maps```
   ```rosrun map_server map_saver -f my_map```
 
-
+### **Demo video**
+https://youtu.be/ySX_F9NLxns
 
 ### TODOs ###
 
