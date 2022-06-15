@@ -16,8 +16,8 @@ Download this package to the _src_ folder of your ROS workspace
 
 
 ### **Instructions**
-- To run the complete simulation of a robot following the path through pre-determined waypoints:
-  ```roslaunch ebot_description ebot.launch```
+- To run the complete simulation of a robot following the path through pre-determined waypoints:\
+  ```roslaunch ebot_description ebot.launch```\
   ```roslaunch ebot_description path_follow.launch```
 
 
@@ -30,8 +30,8 @@ Download this package to the _src_ folder of your ROS workspace
 - Keyboard teleop:
   ```rosrun ebot_navigation ebot_teleop.py```
 
-- Save the map:
-  ```roscd ebot_navigation/maps```
+- Save the map:\
+  ```roscd ebot_navigation/maps```\
   ```rosrun map_server map_saver -f my_map```
   
 ### **Dependencies**
