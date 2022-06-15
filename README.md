@@ -34,7 +34,7 @@ Download this package to the _src_ folder of your ROS workspace
   ```roscd ebot_navigation/maps```
   ```rosrun map_server map_saver -f my_map```
   
-### **Dependancies**
+### **Dependencies**
 TEB local planner
 ```sudo apt-get install ros-<dist>-teb-local-planner```
 
