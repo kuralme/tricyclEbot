@@ -7,7 +7,7 @@ A tricycle robot, named ebot, navigation project on gazebo
 
 The robot is a wheeled tricycle mobile platform with a single actuated front wheel and steering where center of rotation of both coincidents, and two back wheels are non-actuated. The robot's center of body is located at middle point of the rear axis, in between the two back wheels.
 
-Robot odometry is being calculated using a modified version of tricycle plugin libgazebo_ros_tricycle_drive (Marcus Bader). For mapping, localization and path planning; gmapping, AMCL and Timed elastic band planner methods were used respectively and the configuration parameters were tuned manually.
+Robot odometry is being calculated using a modified version of tricycle plugin libgazebo_ros_tricycle_drive (Marcus Bader). For mapping, localization and path planning; gmapping, AMCL and Timed elastic band planner methods were used respectively and the configuration parameters were tuned heuristically.
 
 ### **Installation** 
 Download this package to the _src_ folder of your ROS workspace
