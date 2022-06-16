@@ -19,7 +19,9 @@ Download this package to the _src_ folder of your ROS workspace
 - To run the complete simulation of a robot following the path through pre-determined waypoints:\
   ```roslaunch ebot_description ebot.launch```\
   ```roslaunch ebot_description path_follow.launch```
-
+<p align="center">
+ <img src="./images/ebot_nav.gif" length=".5" width=".5">
+</p>
 
 - Gazebo simulation only:
   ```roslaunch ebot_gazebo ebot_world.launch```
