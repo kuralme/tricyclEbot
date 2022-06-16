@@ -38,6 +38,7 @@ Download this package to the _src_ folder of your ROS workspace
 TEB local planner
 ```sudo apt-get install ros-<dist>-teb-local-planner```
 
+Also, give permission to execute if navigation script(ebot_nav) doesn't work.
 
 ### **Demo video**
 https://youtu.be/ySX_F9NLxns
