@@ -14,6 +14,14 @@ Download this package to the _src_ folder of your ROS workspace
 
 ```git clone https://github.com/kuralme/tricyclebot_ebot```
 
+### **Dependencies**
+TEB local planner
+```sudo apt-get install ros-<dist>-teb-local-planner```
+
+Also, give permission to execute if navigation script(ebot_nav) doesn't work.
+
+### **Demo video**
+https://youtu.be/ySX_F9NLxns
 
 ### **Instructions**
 - To run the complete simulation of a robot following the path through pre-determined waypoints:\
@@ -36,14 +44,6 @@ Download this package to the _src_ folder of your ROS workspace
   ```roscd ebot_navigation/maps```\
   ```rosrun map_server map_saver -f my_map```
   
-### **Dependencies**
-TEB local planner
-```sudo apt-get install ros-<dist>-teb-local-planner```
-
-Also, give permission to execute if navigation script(ebot_nav) doesn't work.
-
-### **Demo video**
-https://youtu.be/ySX_F9NLxns
 
 ### TODOs ###
 
