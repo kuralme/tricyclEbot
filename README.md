@@ -1,5 +1,5 @@
 ## **Description**
-A tricycle robot, named ebot, navigation project on gazebo
+A tricycle robot navigation project on gazebo
 
 <p align="center">
  <img src="./images/robot_joints.png" length=".5" width=".5">
