@@ -1,5 +1,5 @@
-## **Description**
-A tricycle robot navigation project on gazebo
+## Tricycle robot navigation on Gazebo
+A custom tricycle robot navigation project on gazebo environment. Tested on Ubuntu 20.04, with ROS Noetic.
 
 <p align="center">
  <img src="./images/robot_joints.png" length=".5" width=".5">
@@ -7,12 +7,12 @@ A tricycle robot navigation project on gazebo
 
 The robot is a wheeled tricycle mobile platform with a single actuated front wheel and steering where center of rotation of both coincidents, and two back wheels are non-actuated. The robot's center of body is located at middle point of the rear axis, in between the two back wheels.
 
-Robot odometry is being calculated using a modified version of tricycle plugin libgazebo_ros_tricycle_drive (Marcus Bader). For mapping, localization and path planning; gmapping, AMCL and Timed elastic band planner methods were used respectively and the configuration parameters were tuned heuristically.
+Robot odometry is being calculated using a modified version of tricycle plugin libgazebo_ros_tricycle_drive. For mapping, localization and path planning; gmapping, AMCL and Timed elastic band planner methods were used respectively and the configuration parameters were tuned heuristically.
 
 ### **Installation** 
 Download this package to the _src_ folder of your ROS workspace
 
-```git clone https://github.com/kuralme/tricyclebot_ebot```
+```git clone https://github.com/kuralme/tricyclEbot```
 
 ### **Dependencies**
 TEB local planner
